@@ -21,15 +21,15 @@ nu = 0.5;
 dt = nu*h;
 
 % u(1,1) is the velocity at (0,0)
-[u v] = fixed_velocity(m,m,a,0);
+[u v] = fixed_velocity(m,m,-a,-a);
 %[u v] = fixed_velocity2(xx,yy,a,a);
 [ufun vfun pxfun pyfun] = taylor_vortex_function(0,0,1);
 
 
 %[c c2]=taylor_vortex(ufun,vfun,xx,yy,0);
-%c = (sin(pi*xx/L).*sin(pi*yy/L)).^100; %tracer initial condition.
-c = zeros(m);
-c((xx' < .6 & xx' >.4)) = 1;
+c = (sin(pi*xx/L).*sin(pi*yy/L)).^100; %tracer initial condition.
+%c = zeros(m);
+%c((xx' < .6 & xx' >.4)) = 1;
 
 c0 =c;
 %c0 =  (sin(pi*(xx-u')/L).*sin(pi*(yy-v')/L)).^10;
