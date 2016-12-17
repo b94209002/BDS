@@ -1,4 +1,4 @@
-function [u v] = taylor_vortex(ufun,vfun,xx,yy,t)
+function [u v] = taylor_vortex(ufun,vfun,xf,yf,xx,yy,t)
 
-u = ufun(xx,yy,t);
-v = vfun(xx,yy,t);
+u = ufun(xf,yy,t);
+v = vfun(xx,yf,t);

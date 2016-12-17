@@ -22,34 +22,33 @@ dt = nu*h;
 
 % u(1,1) is the velocity at (0,0)
 %[u v] = fixed_velocity(m,m,2*a,-a);
-[u v] = fixed_velocity2(xf,yf,a,a);
+[u v] = fixed_velocity2(xf,yf,xx,yy,a,a);
 [ufun vfun pxfun pyfun] = taylor_vortex_function(0,0,1);
 
-
-%[c c2]=taylor_vortex(ufun,vfun,xx,yy,0);
+[c c2]=taylor_vortex(ufun,vfun,xx,yy,xx,yy,0);
 %c = (sin(pi*xx/L).*sin(pi*yy/L)).^100; %tracer initial condition.
-c = ones(m);
+%c = ones(m);
 %c((xx' < .6 & xx' >.4)) = 1;
-%[uc vc] = fixed_velocity2(xx,yy,a,a);
+%[uc vc] = fixed_velocity2(xx,yy,xx,yy,a,a);
 %c0 =c;
 %c0 =((sin(pi*(xx-uc')/L).*sin(pi*(yy-vc')/L)).^100)';
 for t =dt:dt:T
 
-%[u v] = taylor_vortex(ufun,vfun,xf,yf,t);
-%[uc vc] = taylor_vortex(ufun,vfun,xx,yy,t);
+[u v] = taylor_vortex(ufun,vfun,xf,yf,xx,yy,t);
+
 %[uc1 vc1] = taylor_vortex(ufun,vfun,xx,yy,t-dt);
 % advection tracer 
 %c1 = Lax_wendroff_update_2d(dt,h,h,circshift(u,[-1 0]),circshift(v,[0 -1]),c1);
 %c1 = Fromm_update_2d(dt,h,h,u,v,c1);
-px = -pxfun(xx,yy,t);px=0;
+px = -pxfun(xx,yy,t);
 c = BDS_update_2d(dt,h,h,u,v,px,c);
 %c2 = BDS_update_2d(dt,h,h,u,v,c2);
 %c0 = (sin(pi*(xx-t)/L).*sin(pi*(yy-t)/L)).^100;
 
-pcolor(xx,yy,c');shading flat;colorbar;%hold on;quiver(xx,yy,u',v','w');hold off;
-title([' t = ' num2str(t) ' max = ' num2str(max(max(c))) ', min = ' num2str(min(min(c))) ] );drawnow
+%pcolor(xx,yy,c');shading flat;colorbar;%hold on;quiver(xx,yy,u',v','w');hold off;
+%title([' t = ' num2str(t) ' max = ' num2str(max(max(c))) ', min = ' num2str(min(min(c))) ] );drawnow
 end
-
+[c0 vc] = taylor_vortex(ufun,vfun,xx,yy,xx,yy,t);
 %eval(['w' num2str(log2(m/64)+1) '= c;'])
 eval(['w_err(' num2str(log2(m/64)+1) ')= compute_error(h^2,c,c0);']);
 
