@@ -22,7 +22,7 @@ dt = nu*h;
 
 % u(1,1) is the velocity at (0,0)
 %[u v] = fixed_velocity(m,m,2*a,-a);
-[u v] = fixed_velocity2(xx,yy,a,0);
+[u v] = fixed_velocity2(xx,yy,-a,-a);
 [ufun vfun pxfun pyfun] = taylor_vortex_function(0,0,1);
 
 
@@ -32,7 +32,7 @@ c = (sin(pi*xx/L).*sin(pi*yy/L)).^100; %tracer initial condition.
 %c((xx' < .6 & xx' >.4)) = 1;
 
 %c0 =c;
-c0 =(sin(pi*(xx-u)/L).*sin(pi*(yy-v)/L)).^100;
+c0 =((sin(pi*(xx-u')/L).*sin(pi*(yy-v')/L)).^100)';
 for t =dt:dt:T
 
 %[u v] = taylor_vortex(ufun,vfun,xf,yf,t);
@@ -46,8 +46,8 @@ c = BDS_update_2d(dt,h,h,u,v,px,c);
 %c2 = BDS_update_2d(dt,h,h,u,v,c2);
 %c0 = (sin(pi*(xx-t)/L).*sin(pi*(yy-t)/L)).^100;
 
-pcolor(xx,yy,c');shading flat;colorbar;%hold on;quiver(xx,yy,u',v','w');hold off;
-title([' t = ' num2str(t) ' max = ' num2str(max(max(c))) ', min = ' num2str(min(min(c))) ] );drawnow
+%pcolor(xx,yy,c');shading flat;colorbar;%hold on;quiver(xx,yy,u',v','w');hold off;
+%title([' t = ' num2str(t) ' max = ' num2str(max(max(c))) ', min = ' num2str(min(min(c))) ] );drawnow
 end
 
 %eval(['w' num2str(log2(m/64)+1) '= c;'])

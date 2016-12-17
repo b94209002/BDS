@@ -66,6 +66,8 @@ Gammaxm = fh + 1/6*(fy.*(3*vs*dy-2*dt*(va+vp)) + fx.*(3*ut*dx-2*dt*uu));
 Gammaxm = Gammaxm + 1/12*fxy.*(3*ut.*vs*dx*dy - 2*dt*dx*ut.*(va+vp) - 2*dt*dy*vs.*uu + dt*dt*uu.*(va+2*vp));
 %Gammaxm = Gammaxm .* (1-dt/3*fdiv);
 
+
+
 uu = .5*((vs+1).*ua + (1-vs).*circshift(ua,[0,-1]));
 um = circshift(uu,[1,0]);
 vshx = .5*dt/dx*(uu.*Gammaxp - um.*Gammaxm);
