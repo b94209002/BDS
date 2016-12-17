@@ -30,9 +30,9 @@ dt = nu*h;
 c = (sin(pi*xx/L).*sin(pi*yy/L)).^100; %tracer initial condition.
 %c = zeros(m);
 %c((xx' < .6 & xx' >.4)) = 1;
-[uc vc] = fixed_velocity2(xx,yy,a,a);
+
 %c0 =c;
-c0 =((sin(pi*(xx-uc')/L).*sin(pi*(yy-vc')/L)).^100)';
+c0 =((sin(pi*(xx-u')/L).*sin(pi*(yy-v')/L)).^100)';
 for t =dt:dt:T
 
 %[u v] = taylor_vortex(ufun,vfun,xf,yf,t);
