@@ -6,15 +6,6 @@ div = (ua-u)/dx+ (va-v)/dy;
 us = 2*(ua>0)-1;
 vs = 2*(va>0)-1;
 
-%note here suppose u> 0
-sxp = .5*sx.*(dx-ua*dt) + sh;
-sxm = .5*circshift(sx,[-1,0]).*(-dx-ua*dt) + circshift(sh,[-1,0]);
-%First two term of 17
-sl = sxp .* ( 1-.5*dt/dx*(ua - u)) + .5*dt*f; 
-sr = sxm .* ( 1-.5*dt/dx*(circshift(ua,[-1,0]) - ua)) +.5*dt*circshift(f,[-1,0]);
-
-usx = .5*((us+1).*sl + (1-us).*sr);
-
 %usx = ((ua>0).*sl + (ua<=0).*sr);
 % DEF area in BDS paper
 % u at u(i+1/2) vs  v(j+1/2)
@@ -35,8 +26,18 @@ Gammaym = fh + 1/6*(fx.*(3*us*dx-2*dt*(ua+up)) + fy.*(3*vt*dy-2*dt*vv));
 Gammaym = Gammaym + 1/12*fxy.*(3*dx*dy*us.*vt - 2*dt*dy*vt.*(ua+up) - 2*dt*dx*us.*vv + dt*dt*(ua+2*up).*vv);
 %Gammaym = Gammaym .* (1 - dt/3*fdiv); 
 
+%note here suppose u> 0
+sxp = .5*sx.*(dx-ua*dt) + sh;
+sxm = .5*circshift(sx,[-1,0]).*(-dx-ua*dt) + circshift(sh,[-1,0]);
+%First two term of 17
+sl = sxp .* ( 1-.5*dt/dx*(ua - u)) + .5*dt*f; 
+sr = sxm .* ( 1-.5*dt/dx*(circshift(ua,[-1,0]) - ua)) +.5*dt*circshift(f,[-1,0]);
+
+usx = .5*((us+1).*sl + (1-us).*sr);
+
 vv = .5*((us+1).*va + (1-us).*circshift(va,[-1,0]));
-vm = circshift(vv,[0 1]);
+vm = .5*((us+1).*v + (1-us).*circshift(v,[-1,0]));
+%circshift(vv,[0 1]);
 uslr = .5*dt/dy*(vv.*Gammayp - vm.*Gammaym);
 
 usr = ( usx - uslr );
@@ -67,11 +68,11 @@ Gammaxm = Gammaxm + 1/12*fxy.*(3*ut.*vs*dx*dy - 2*dt*dx*ut.*(va+vp) - 2*dt*dy*vs
 %Gammaxm = Gammaxm .* (1-dt/3*fdiv);
 
 uu = .5*((vs+1).*ua + (1-vs).*circshift(ua,[0,-1]));
-um = circshift(uu,[1,0]);
+um = .5*((vs+1).*u + (1-vs).*circshift(u,[0,-1]));
 vshx = .5*dt/dx*(uu.*Gammaxp - um.*Gammaxm);
 
 vsh = ( vsx - vshx);
 vsl = circshift(vsh,[0,1]);
-
+          
 return
 
