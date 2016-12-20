@@ -15,55 +15,60 @@ x = linspace(0,1-h,m)';y = linspace(0,1-h,m)';
 %xi = linspace(h/2,1-h/2,m)';% x-coordinate on the interface
 a = 1; % advection coiefficient
 T = 1;
-mu = 0.00; % diffusion coefficient
+mu = 0.01; % diffusion coefficient
 vavg =0;
 L = 1;
 nu = 0.5; 
 dt = nu*h;
 
 % Use FFT approach diffusion
-k = (2*pi)*[0:(m/2-1) (-m/2):(-1)]; % Vector of wavenumbers
+k = (2*pi*1i)*[0:(m/2-1) (-m/2):(-1)]; % Vector of wavenumbers
 [KX KY]  = meshgrid(k,k); % Matrix of (x,y) wavenumbers corresponding
                           % to Fourier mode (m,n)
-delsq = -(KX.^2 + KY.^2);
+delsq = (KX.^2 + KY.^2);
 
-% u(1,1) is the velocity at (0,0)
-%[u v] = fixed_velocity(m,m,2*a,-a);
-[u v] = fixed_velocity2(xf,yf,xx,yy,a,a);
-%[ufun vfun pxfun pyfun] = taylor_vortex_function(mu,vavg,1);
+[u v] = fixed_velocity(m,m,a,0);
 
+%m2 = m*m;e = ones(m,1);I = speye(m);
+%d0 = spdiags([e e -2*e e e],[-m+1 -1:1 m-1],m,m);
+%D = mu*dt/h/h*(kron(I,d0)+kron(d0,I));
+%CNf = speye(m2) +.5*D;
+%CNb = speye(m2) -.5*D;
 
-D = mu*dt*delsq;
+D = mu*delsq;
 CNf = ones(m) +.5*mu*dt*delsq;
-CNb = 1./(ones(m) -.5*mu*dt*delsq);
+CNb = ones(m) -.5*mu*dt*delsq;
 
-%[c c2]=taylor_vortex(ufun,vfun,xx,yy,xx,yy,0);
-%ch = fft2(c);
-c = (sin(pi*xx/L).*sin(pi*yy/L)).^100; %tracer initial condition.
-%ch = fft2(c);
-%c = ones(m);
-%c((xx' < .6 & xx' >.4)) = 1;
-[uc vc] = fixed_velocity2(xx,yy,xx,yy,a,a);
-%c0 =c;
-c0 =((sin(pi*(xx-uc')/L).*sin(pi*(yy-vc')/L)).^100)';
+c = sin(2*pi*xx'/L); %tracer initial condition.
+ch = fft2(c);
+
+
 for t =dt:dt:T
 
-S = 0;
-c = BDS_update_2d(dt,h,h,u,v,S,c);
-%Fh = fft2(F);
+%S = reshape(D*reshape(c,m2,1),m,m);
+%F = BDS_update_2d(dt,h,h,u,v,S,c);
+%c = Crank_Nicolson(m,m2,CNb,CNf,c,F);
 
+S = real(ifft2(D.*ch));
+F = BDS_update_2d(dt,h,h,u,v,S,c);
+Fh = fft2(F);
+ch = Crank_Nicolson(CNb,CNf,ch,Fh);
+c = real(ifft2(ch));
+
+%pcolor(xx,yy,c');shading flat;colorbar;%hold on;quiver(xx,yy,u',v','w');hold off;
+%title([' t = ' num2str(t) ' max = ' num2str(max(max(c))) ', min = ' num2str(min(min(c))) ] );drawnow
 end
 %c = real(ifft2(ch));
-%[c0 vc] = taylor_vortex(ufun,vfun,xx,yy,xx,yy,t);
+c0 = sin(2*pi*xx'/L)*exp(-4*pi^2*mu);
 %eval(['w' num2str(log2(m/64)+1) '= c;'])
 eval(['w_err(' num2str(log2(m/64)+1) ')= compute_error(h^2,c,c0);']);
 
 eval(['w_max(' num2str(log2(m/64)+1) ')= max(max(c));']);
 eval(['w_min(' num2str(log2(m/64)+1) ')= min(min(c));']);
 
+
 eval(['w' num2str(log2(m/64)+1) '= c;']);
-eval(['x' num2str(log2(m/64)+1) '= xx;']);
-end
+eval(['x' num2str(log2(m/64)+1) '= xx;']);end
 
 
 %compute_norm(wnorm1,wnorm2,wnorm3,wnorm4,wnorm5)
