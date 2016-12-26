@@ -27,7 +27,7 @@ k = (2*pi*1i)*[0:(m/2-1) (-m/2):(-1)]; % Vector of wavenumbers
                           % to Fourier mode (m,n)
 delsq = (KX.^2 + KY.^2);
 
-[u v] = fixed_velocity(m,m,a,0);
+[u v] = fixed_velocity(m,m,a,a);
 
 %m2 = m*m;e = ones(m,1);I = speye(m);
 %d0 = spdiags([e e -2*e e e],[-m+1 -1:1 m-1],m,m);
@@ -39,7 +39,8 @@ D = mu*delsq;
 CNf = ones(m) +.5*mu*dt*delsq;
 CNb = ones(m) -.5*mu*dt*delsq;
 
-c = sin(2*pi*xx'/L); %tracer initial condition.
+%c = sin(2*pi*xx'/L); %tracer initial condition.
+c = sin(2*pi*(xx+yy)'/L); %tracer initial condition.
 ch = fft2(c);
 
 
@@ -55,11 +56,12 @@ Fh = fft2(F);
 ch = Crank_Nicolson(CNb,CNf,ch,Fh);
 c = real(ifft2(ch));
 
-%pcolor(xx,yy,c');shading flat;colorbar;%hold on;quiver(xx,yy,u',v','w');hold off;
-%title([' t = ' num2str(t) ' max = ' num2str(max(max(c))) ', min = ' num2str(min(min(c))) ] );drawnow
+pcolor(xx,yy,c');shading flat;colorbar;%hold on;quiver(xx,yy,u',v','w');hold off;
+title([' t = ' num2str(t) ' max = ' num2str(max(max(c))) ', min = ' num2str(min(min(c))) ] );drawnow
 end
 %c = real(ifft2(ch));
-c0 = sin(2*pi*xx'/L)*exp(-4*pi^2*mu);
+%c0 = sin(2*pi*(xx)'/L)*exp(-4*pi^2*mu);
+c0 = sin(2*pi*(xx+yy)'/L)*exp(-8*pi^2*mu);
 %eval(['w' num2str(log2(m/64)+1) '= c;'])
 eval(['w_err(' num2str(log2(m/64)+1) ')= compute_error(h^2,c,c0);']);
 
@@ -68,7 +70,8 @@ eval(['w_min(' num2str(log2(m/64)+1) ')= min(min(c));']);
 
 
 eval(['w' num2str(log2(m/64)+1) '= c;']);
-eval(['x' num2str(log2(m/64)+1) '= xx;']);end
+eval(['x' num2str(log2(m/64)+1) '= xx;']);
+end
 
 
 %compute_norm(wnorm1,wnorm2,wnorm3,wnorm4,wnorm5)
