@@ -11,35 +11,35 @@ axes('position',[axis_lf axis_bt axis_x axis_y]);
 fn='Times new roman'; xl='\itx \rm(\itkm\rm)'; yl='\ity \rm(\itkm\rm)';
 
 cinter = [-2:0.1:2];
-ax = [0 1 0 1 ]; tick = [0:.2:1];cax= [-2 2];
+ax = [0 1 0 1 ]; tick = [0:.2:1];cax= [-.5 2.5];
 
 
 subplot('position',[.1 .54 .4 .4]) 
-contourf(x4,x4',w4,cinter);caxis(cax);axis(ax) 
+contourf(x4,x4',w4',cinter);caxis(cax);axis(ax) 
 set(gca,'xtick',tick,'xticklabel',[])
 set(gca,'ytick',tick)
-text(0.31,0.575,'m=512','fontsize',16)
+text(0.05,0.92,'m=512','color','w','fontsize',16)
 
 subplot('position',[.55 .54 .4 .4])
-contourf(x3,x3',w3,cinter);caxis(cax);axis(ax) 
+contourf(x3,x3',w3',cinter);caxis(cax);axis(ax) 
 set(gca,'xtick',tick,'xticklabel',[])
 set(gca,'ytick',tick,'yticklabel',[])
-text(0.31,0.575,'m=256','fontsize',16)
+text(0.05,0.92,'m=256','color','w','fontsize',16)
 
 subplot('position',[.1 .12 .4 .4]) 
-contourf(x2,x2',w2,cinter);caxis(cax);axis(ax) 
+contourf(x2,x2',w2',cinter);caxis(cax);axis(ax) 
 set(gca,'xtick',tick,'ytick',tick)
-text(0.31,0.575,'m=128','fontsize',16)
+text(0.05,0.92,'m=128','color','w','fontsize',16)
 
 subplot('position',[.55 .12 .4 .4]) 
-contourf(x1,x1',w1,cinter);caxis(cax);axis(ax) 
+contourf(x1,x1',w1',cinter);caxis(cax);axis(ax) 
 set(gca,'xtick',tick)
 set(gca,'ytick',tick,'yticklabel',[])
-text(0.31,0.575,'m=64','fontsize',16)
+text(0.05,0.92,'m=64','color','w','fontsize',16)
 
-h = colorbar('h');caxis([0 1])
+h = colorbar('h');caxis(cax)
 set(h,'position',[.1 .06 .85 .02]);
-print(f,'-r200','-depsc',['../fig/Steady_Taylor_vortex'])
+print(f,'-r200','-depsc',['../fig/Taylor_vortex'])
 
 close(f)
 
