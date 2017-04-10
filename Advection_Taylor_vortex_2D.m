@@ -11,6 +11,9 @@ x = linspace(h/2,1-h/2,m)';y = linspace(h/2,1-h/2,m)';
 [xx yy] = meshgrid(x,y);
 x = linspace(0,1-h,m)';y = linspace(0,1-h,m)';
 [xf yf] = meshgrid(x,y);
+dx = circshift(xf,[-1 0 ]) -xf;
+dy = circshift(yf,[0 -1]) -yf;
+
 
 % x-coordinate
 %xi = linspace(h/2,1-h/2,m)';% x-coordinate on the interface
@@ -81,9 +84,9 @@ c = real(ifft2(ch));
 %k1 = -pxfun(xx,yy,t+.5*dt);
 %k2 = -pxfun(xx,yy,t+dt*5/6);
 %c = c + .125*dt*(k1+3*k2);
-%[c0 vc] = taylor_vortex(ufun,vfun,xx,yy,xx,yy,t);
-%pcolor(xx,yy,(c)');shading flat;colorbar;%hold on;quiver(xx,yy,u',v','w');hold off;
-%title([' t = ' num2str(t) ' max = ' num2str(max(max(c))) ', min = ' num2str(min(min(c))) ] );drawnow
+[c0 vc] = taylor_vortex(ufun,vfun,xx,yy,xx,yy,t);
+pcolor(xx,yy,(c)');shading flat;colorbar;%hold on;quiver(xx,yy,u',v','w');hold off;
+title([' t = ' num2str(t) ' max = ' num2str(max(max(c))) ', min = ' num2str(min(min(c))) ] );drawnow
 end
 %c = real(ifft2(ch));
 [c0 vc] = taylor_vortex(ufun,vfun,xx,yy,xx,yy,t);

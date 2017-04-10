@@ -1,7 +1,7 @@
 function [usl usr vsl vsh] = BDS_compute_flux(dt,dx,dy,u,v,sxy,sx,sy,sh,f)
 % ua va are velocity at i+1/2 and j+1/2
 ua = circshift(u,[-1 0]);va = circshift(v,[0 -1]);
-div = (ua-u)/dx+ (va-v)/dy;
+div = (ua-u)./dx+ (va-v)./dy;
 % corner index dx/2 or -dx/2 us, vs
 us = 2*(ua>0)-1;
 vs = 2*(va>0)-1;
@@ -34,7 +34,7 @@ Gammaym = Gammaym .* (1 - dt/3*fdiv);
 sxp = .5*sx.*(dx-ua*dt) + sh;
 sxm = .5*circshift(sx,[-1,0]).*(-dx-ua*dt) + circshift(sh,[-1,0]);
 %First two term of 17
-sl = sxp .* ( 1-.5*dt/dx*(ua - u)) + .5*dt*f; 
+sl = sxp .* ( 1-.5*dt/dx.*(ua - u)) + .5*dt*f; 
 sr = sxm .* ( 1-.5*dt/dx*(circshift(ua,[-1,0]) - ua)) +.5*dt*circshift(f,[-1,0]);
 
 usx = .5*((us+1).*sl + (1-us).*sr);
@@ -50,7 +50,7 @@ usl = circshift(usr,[1,0]);
 %note here suppose v > 0 
 syp = .5*sy.*(dy-va*dt) + sh;
 sym = .5*circshift(sy,[0,-1]).*(-dy-va*dt) + circshift(sh,[0,-1]);
-st = syp .* ( 1-.5*dt/dy*(va - v)) +.5*dt*f;
+st = syp .* ( 1-.5*dt/dy.*(va - v)) +.5*dt*f;
 sb = sym .* ( 1-.5*dt/dy*(circshift(va,[0 -1]) - va)) + .5*dt*circshift(f,[0 -1]);
 
 vsx = .5*((vs+1).*st + (1- vs).*sb);
@@ -77,7 +77,7 @@ Gammaxm = Gammaxm .* (1-dt/3*fdiv);
 
 uu = .5*((vs+1).*ua + (1-vs).*circshift(ua,[0,-1]));
 um = .5*((vs+1).*u + (1-vs).*circshift(u,[0,-1]));
-vshx = .5*dt/dx*(uu.*Gammaxp - um.*Gammaxm);
+vshx = .5*dt/dx.*(uu.*Gammaxp - um.*Gammaxm);
 
 vsh = ( vsx - vshx);
 vsl = circshift(vsh,[0,1]);

@@ -15,7 +15,7 @@ x = linspace(0,1-h,m)';y = linspace(0,1-h,m)';
 %xi = linspace(h/2,1-h/2,m)';% x-coordinate on the interface
 a = 1; % advection coiefficient
 T = 1;
-mu = 0.01; % diffusion coefficient
+mu = 0.00; % diffusion coefficient
 vavg =0;
 L = 1;
 nu = 0.5; 

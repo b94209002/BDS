@@ -10,8 +10,8 @@ set(gcf,'Position',[scr_lf scr_bt scr_x scr_y],'PaperPosition',[fig_lf fig_bt fi
 axes('position',[axis_lf axis_bt axis_x axis_y]);
 fn='Times new roman'; xl='\itx \rm(\itkm\rm)'; yl='\ity \rm(\itkm\rm)';
 
-cinter = [-2:0.1:2];
-ax = [0 1 0 1 ]; tick = [0:.2:1];cax= [-.5 2.5];
+cinter = [-2.1:0.1:2.1];
+ax = [0 1 0 1 ]; tick = [0:.2:1];cax= [-2 2];
 
 
 subplot('position',[.1 .54 .4 .4]) 
@@ -39,7 +39,7 @@ text(0.05,0.92,'m=64','color','w','fontsize',16)
 
 h = colorbar('h');caxis(cax)
 set(h,'position',[.1 .06 .85 .02]);
-print(f,'-r200','-depsc',['../fig/Taylor_vortex'])
+print(f,'-r200','-depsc',['../fig/stay_Taylor_vortex'])
 
 close(f)
 

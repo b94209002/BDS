@@ -9,5 +9,5 @@ function F = BDS_update_2d(dt,dx,dy,u,v,f,c)
 
 ua = circshift(u,[-1 0]);va = circshift(v,[0 -1]);
 %c = c - dt/dx*(ua.*usr-u.*usl) - dt/dy*(va.*vsh - v.*vsl) + f*dt;
-F =  - dt/dx*(ua.*usr-u.*usl) - dt/dy*(va.*vsh - v.*vsl) ;
+F =  - dt/dx.*(ua.*usr-u.*usl) - dt/dy.*(va.*vsh - v.*vsl) ;
 return
